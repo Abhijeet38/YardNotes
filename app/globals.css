@@ -1,0 +1,13 @@
+/* minimal reset */
+html,body,#root { padding:0; margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+button { cursor: pointer; }
+input,textarea { font-family: inherit; }
+
+/* Simple utility classes used by components */
+.container { max-width: 900px; margin: 40px auto; padding: 20px; }
+.card { background: white; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); padding: 16px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.btn { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; }
+.btn-primary { background:#4f46e5; color:white; }
+.btn-danger { background:#dc2626; color:white; }
+.small { font-size:0.9rem; color:#6b7280; }
