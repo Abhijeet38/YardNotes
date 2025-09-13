@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
+// Make sure to import the new CSS file
+// import './styles/dashboard.css';
+
 type Tenant = { id: string; name: string; slug: string; plan: string; maxNotes: number };
 type User = { id: string; email: string; role: string; tenant: Tenant };
 
@@ -15,7 +18,12 @@ export default function Page() {
     const u = localStorage.getItem('user');
     if (t && u) {
       setToken(t);
-      setUser(JSON.parse(u));
+      try {
+        setUser(JSON.parse(u));
+      } catch (e) {
+        console.error("Failed to parse user from localStorage", e);
+        handleLogout();
+      }
     }
   }, []);
 
@@ -34,13 +42,12 @@ export default function Page() {
   };
 
   return (
-    <>
-      <h1>Multi‑Tenant Notes</h1>
+    <main>
       {!token || !user ? (
         <Login onLogin={handleLogin} />
       ) : (
         <Dashboard token={token} user={user} onLogout={handleLogout} onUserUpdate={setUser} />
       )}
-    </>
+    </main>
   );
 }

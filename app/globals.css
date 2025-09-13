@@ -1,13 +1,464 @@
-/* minimal reset */
-html,body,#root { padding:0; margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
-button { cursor: pointer; }
-input,textarea { font-family: inherit; }
+/* General Body Styles */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #f8fafc; /* gray-50 */
+  color: #334155; /* slate-700 */
+}
 
-/* Simple utility classes used by components */
-.container { max-width: 900px; margin: 40px auto; padding: 20px; }
-.card { background: white; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); padding: 16px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-.btn { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; }
-.btn-primary { background:#4f46e5; color:white; }
-.btn-danger { background:#dc2626; color:white; }
-.small { font-size:0.9rem; color:#6b7280; }
+/* Main Container */
+.login-page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.login-wrapper {
+  max-width: 28rem; /* max-w-md */
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Header */
+.login-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.login-header h1 {
+  font-size: 2.25rem; /* text-4xl */
+  font-weight: 700;
+  color: #1e293b; /* gray-800 */
+}
+
+.login-subtitle {
+  text-align: center;
+  color: #64748b; /* gray-500 */
+  margin-bottom: 2rem;
+}
+
+/* Login Card */
+.login-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1.5rem; /* rounded-2xl */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+}
+
+.login-card h2 {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 600;
+  color: #374151; /* gray-700 */
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500;
+  color: #4b5563; /* gray-600 */
+  margin-bottom: 0.25rem;
+}
+
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 0.5rem; /* rounded-lg */
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4f46e5; /* indigo-500 */
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5); /* ring-2 focus:ring-indigo-500 */
+}
+
+/* Button Styles */
+.login-button {
+  width: 100%;
+  background-color: #4f46e5; /* bg-indigo-600 */
+  color: white;
+  font-weight: 700;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem; /* rounded-lg */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #4338ca; /* hover:bg-indigo-700 */
+}
+
+.login-button:disabled {
+  background-color: #a5b4fc; /* disabled:bg-indigo-400 */
+  cursor: not-allowed;
+}
+
+/* Test Accounts Section */
+.test-accounts-section {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem; /* text-sm */
+  color: #64748b; /* text-gray-500 */
+}
+
+.test-accounts-section p {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.test-accounts-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 0.5rem;
+}
+
+.test-accounts-buttons button {
+  background: none;
+  border: none;
+  color: #4f46e5; /* text-indigo-600 */
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+.test-accounts-buttons button:hover {
+  text-decoration: underline;
+}
+
+/* Error Banner */
+.error-banner {
+  background-color: #fee2e2; /* bg-red-100 */
+  border-left: 4px solid #ef4444; /* border-l-4 border-red-500 */
+  color: #b91c1c; /* text-red-700 */
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.375rem; /* rounded-md */
+}
+
+.error-banner p {
+  margin: 0;
+}
+
+/* Icon Styles */
+.file-text-icon {
+  width: 2.5rem; /* w-10 */
+  height: 2.5rem; /* h-10 */
+  color: #4f46e5; /* text-indigo-600 */
+}
+
+.loader-icon {
+  width: 1.25rem; /* w-5 */
+  height: 1.25rem; /* h-5 */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* --- Dashboard Container & Header --- */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1.5rem;
+}
+
+.dashboard-header h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.user-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #4b5563;
+  margin-top: 0.5rem;
+}
+
+.plan-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.plan-badge.plan-free {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.plan-badge.plan-pro {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+/* --- Shared Button Styles (Add to global.css or keep here) --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  font-weight: 600;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  background-color: #4f46e5;
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #4338ca;
+}
+.btn-primary:disabled {
+  background-color: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: #f3f4f6;
+  color: #1f2937;
+  border: 1px solid #d1d5db;
+}
+.btn-secondary:hover {
+  background-color: #e5e7eb;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  color: #6b7280;
+  cursor: pointer;
+}
+.btn-icon:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+.btn-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.btn-delete:hover {
+  color: #dc2626;
+  background-color: #fee2e2;
+}
+
+
+/* --- Upgrade Banner --- */
+.upgrade-banner {
+  background-color: #f0f5ff;
+  border: 1px solid #d6e4ff;
+  color: #254282;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.plan-usage p {
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+.usage-bar {
+  width: 200px;
+  height: 8px;
+  background-color: #d6e4ff;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.usage-fill {
+  height: 100%;
+  background-color: #4f46e5;
+  border-radius: 4px;
+}
+.btn-upgrade {
+  background-color: #ffb700;
+  color: #3d2c00;
+}
+.btn-upgrade:hover {
+  background-color: #e6a500;
+}
+
+/* --- Main Dashboard Layout --- */
+.dashboard-main {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+  .dashboard-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Card & Form Styles --- */
+.card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+}
+
+.create-note-section h2, .notes-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+.form-group input, .form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-family: inherit;
+  font-size: 1rem;
+}
+.form-group input:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5);
+}
+
+/* --- Notes Section --- */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.note-card {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.note-card-header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #f3f4f6;
+}
+.note-card-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  word-break: break-word;
+}
+
+.note-card-content {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  color: #374151;
+  flex-grow: 1;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.note-card-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #f3f4f6;
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+/* --- Empty/Loading States --- */
+.loading-state, .empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6b7280;
+  background-color: #f9fafb;
+  border: 2px dashed #e5e7eb;
+  border-radius: 0.75rem;
+}
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.loader-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: spin 1s linear infinite;
+}

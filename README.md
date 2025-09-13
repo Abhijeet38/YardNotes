@@ -10,6 +10,18 @@ Local:
 5. npm run seed
 6. npm run dev
 
+API Reference
+- GET /api/health — { status: "ok" }
+- POST /api/auth/login — { email, password } → { token, user }
+- GET /api/notes — list tenant notes (Auth)
+- POST /api/notes — create note (Auth, respects tenant plan limits)
+- GET /api/notes/:id — get note (Auth)
+- PUT /api/notes/:id — update note (Auth)
+- DELETE /api/notes/:id — delete note (Auth)
+- POST /api/tenants/:slug/upgrade — Admin only
+- POST /api/tenants/:slug/invite — Admin only (creates user with default password)
+
+
 Predefined accounts (password: password):
 - admin@acme.test (Admin, tenant: Acme)
 - user@acme.test (Member, tenant: Acme)
