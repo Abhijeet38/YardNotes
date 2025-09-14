@@ -1,4 +1,3 @@
-// components/Dashboard.tsx
 'use client';
 import React, { useEffect, useState } from 'react';
 
@@ -8,6 +7,7 @@ import Header from './layout/header';
 import NoteList from './notes/NoteList';
 import MemberManagement from './admin/MemberManagement';
 import NoteCreatorModal from './notes/NoteCreator';
+import NoteEditor from './notes/NoteEditor';
 import TenantUpgrade from './admin/TenantUpgrade';
 
 // --- Types ---
@@ -23,6 +23,7 @@ export default function Dashboard({ token, user, onLogout, onUserUpdate }: { tok
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState<ActiveView>('my-notes');
   const [isNoteCreatorOpen, setIsNoteCreatorOpen] = useState(false);
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
 
   const apiBase = '/api';
 
@@ -44,7 +45,6 @@ export default function Dashboard({ token, user, onLogout, onUserUpdate }: { tok
 
   useEffect(() => { 
     fetchNotes();
-     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // --- Note Operations ---
@@ -67,6 +67,11 @@ export default function Dashboard({ token, user, onLogout, onUserUpdate }: { tok
     fetchNotes();
   };
   
+  const handleNoteUpdated = () => {
+    setEditingNote(null);
+    fetchNotes();
+  };
+  
   const isAtLimit = user.tenant.plan === 'FREE' && notes.filter(n => n.userId === user.id).length >= user.tenant.maxNotes;
 
   // --- Render Logic ---
@@ -74,9 +79,10 @@ export default function Dashboard({ token, user, onLogout, onUserUpdate }: { tok
     switch(activeView) {
       case 'my-notes':
         return <NoteList
-          notes={notes.filter(n => !n.isPublic && n.userId === user.id)}
+          notes={notes.filter(n => n.userId === user.id)}
           isLoading={isLoading}
           onDeleteNote={deleteNote}
+          onEditNote={setEditingNote}
           viewType="private"
           currentUserId={user.id}
         />;
@@ -85,6 +91,7 @@ export default function Dashboard({ token, user, onLogout, onUserUpdate }: { tok
           notes={notes.filter(n => n.isPublic)}
           isLoading={isLoading}
           onDeleteNote={deleteNote}
+          onEditNote={note => note.userId === user.id ? setEditingNote(note) : null}
           viewType="public"
           currentUserId={user.id}
         />;
@@ -134,6 +141,16 @@ export default function Dashboard({ token, user, onLogout, onUserUpdate }: { tok
           onError={setError}
           onClose={() => setIsNoteCreatorOpen(false)}
           onNoteCreated={handleNoteCreated}
+        />
+      )}
+      
+      {editingNote && (
+        <NoteEditor
+          token={token}
+          note={editingNote}
+          onError={setError}
+          onClose={() => setEditingNote(null)}
+          onNoteUpdated={handleNoteUpdated}
         />
       )}
     </div>

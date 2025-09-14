@@ -1,4 +1,3 @@
-// components/layout/Sidebar.tsx
 'use client';
 import React from 'react';
 
@@ -27,7 +26,7 @@ export default function Sidebar({ userRole, activeView, onNavigate }: SidebarPro
     <aside className="sidebar">
       <div className="sidebar-header">
         <FileTextIcon />
-        <h1>Notes SaaS</h1>
+        <h1>YardNotes</h1>
       </div>
       <nav className="sidebar-nav">
         <ul>

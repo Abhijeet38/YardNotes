@@ -19,6 +19,15 @@ export async function POST(req: NextRequest, { params }: { params: { slug: strin
     const body = await req.json();
     const { email, role } = body;
     if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400, headers: { 'Access-Control-Allow-Origin': '*' }});
+    
+    // Email domain validation - must match tenant domain
+    const emailDomain = email.split('@')[1];
+    const tenantDomain = tenant.slug + '.test'; // Assuming tenant domains follow this pattern
+    if (emailDomain !== tenantDomain) {
+      return NextResponse.json({ 
+        error: `Invalid email domain. Users must have an @${tenantDomain} email address.` 
+      }, { status: 400, headers: { 'Access-Control-Allow-Origin': '*' }});
+    }
 
     const hashed = await bcrypt.hash('password', 10);
     const user = await prisma.user.create({

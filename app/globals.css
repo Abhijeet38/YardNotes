@@ -113,6 +113,29 @@ body, html {
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5); /* ring-2 focus:ring-indigo-500 */
 }
 
+/* Email input with domain */
+.email-input-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.email-domain {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 0.9em;
+  pointer-events: none;
+  user-select: none;
+}
+
+.email-btn {
+  margin-left: 8px;
+}
+
 /* Button Styles */
 .login-button {
   width: 100%;
@@ -333,6 +356,18 @@ body, html {
   flex-direction: column;
 }
 
+/* Private note styling */
+.note-card.private {
+  border-left: 4px solid #8b5cf6; /* Purple border for private notes */
+  background-color: #faf5ff; /* Light purple background */
+}
+
+/* Public note styling */
+.note-card.public {
+  border-left: 4px solid #3b82f6; /* Blue border for public notes */
+  background-color: #eff6ff; /* Light blue background */
+}
+
 .note-card-header {
   padding: 1rem 1.5rem;
   display: flex;
@@ -353,7 +388,18 @@ body, html {
   gap: 0.5rem;
   color: var(--text-secondary);
 }
-.visibility-icon svg { width: 1rem; height: 1rem; }
+.visibility-icon svg { 
+  width: 1rem; 
+  height: 1rem; 
+}
+
+.public .visibility-icon {
+  color: #3b82f6; /* Blue for public notes */
+}
+
+.private .visibility-icon {
+  color: #8b5cf6; /* Purple for private notes */
+}
 
 .note-card-content {
   padding: 1rem 1.5rem;
@@ -411,9 +457,11 @@ body, html {
 .invite-form {
     display: flex;
     gap: .5rem;
+    align-items: center;
 }
 .invite-form input {
     flex-grow: 1;
+    width: 100%;
 }
 
 /* --- Modal Styles --- */
@@ -493,6 +541,7 @@ body, html {
 .btn-icon:hover { background-color: #f3f4f6; color: var(--text-primary); }
 .btn-icon svg { width: 1.25rem; height: 1.25rem; }
 .btn-delete:hover { color: #dc2626; background-color: #fee2e2; }
+.btn-edit:hover { color: #0284c7; background-color: #e0f2fe; }
 
 .plan-badge { font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase; }
 .plan-badge.plan-free { background-color: #fee2e2; color: #b91c1c; }

@@ -74,7 +74,7 @@ export default function Login({ onLogin }: { onLogin: (token: string, user: User
       <div className="login-wrapper">
         <div className="login-header">
           <FileTextIcon />
-          <h1>Notes SaaS</h1>
+          <h1>YardNotes</h1>
         </div>
         <p className="login-subtitle">Your secure, multi-tenant note-taking application.</p>
         <div className="login-card">

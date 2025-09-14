@@ -1,36 +1,46 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // --- Icons ---
-const PlusIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
+const SaveIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>;
 const XIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>;
 
-interface NoteCreatorModalProps {
+// --- Types ---
+type Note = { id: string; title: string; content: string; createdAt: string; isPublic: boolean; userId: string; };
+
+interface NoteEditorProps {
   token: string;
+  note: Note;
   onError: (error: string | null) => void;
   onClose: () => void;
-  onNoteCreated: () => void;
+  onNoteUpdated: () => void;
 }
 
-export default function NoteCreatorModal({ token, onError, onClose, onNoteCreated }: NoteCreatorModalProps) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [isPublic, setIsPublic] = useState(false);
+export default function NoteEditor({ token, note, onError, onClose, onNoteUpdated }: NoteEditorProps) {
+  const [title, setTitle] = useState(note.title);
+  const [content, setContent] = useState(note.content);
+  const [isPublic, setIsPublic] = useState(note.isPublic);
   const apiBase = '/api';
 
-  async function createNote(e: React.FormEvent) {
+  useEffect(() => {
+    setTitle(note.title);
+    setContent(note.content);
+    setIsPublic(note.isPublic);
+  }, [note]);
+
+  async function updateNote(e: React.FormEvent) {
     e.preventDefault();
     onError(null);
     try {
-      const res = await fetch(`${apiBase}/notes`, {
-        method: 'POST',
+      const res = await fetch(`${apiBase}/notes/${note.id}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ title, content, isPublic })
       });
       const body = await res.json();
-      if (!res.ok) throw new Error(body?.error || 'Failed to create note');
+      if (!res.ok) throw new Error(body?.error || 'Failed to update note');
       
-      onNoteCreated();
+      onNoteUpdated();
     } catch (err: any) {
       onError(err.message);
     }
@@ -40,10 +50,10 @@ export default function NoteCreatorModal({ token, onError, onClose, onNoteCreate
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Create a New Note</h2>
+          <h2>Edit Note</h2>
           <button onClick={onClose} className="btn-icon"><XIcon /></button>
         </div>
-        <form onSubmit={createNote}>
+        <form onSubmit={updateNote}>
           <div className="form-group">
             <label htmlFor="title">Title</label>
             <input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="My awesome idea" required />
@@ -58,7 +68,7 @@ export default function NoteCreatorModal({ token, onError, onClose, onNoteCreate
           </div>
           <div className="modal-footer">
             <button type="button" onClick={onClose} className="btn btn-secondary">Cancel</button>
-            <button type="submit" className="btn btn-primary"><PlusIcon /> Create Note</button>
+            <button type="submit" className="btn btn-primary"><SaveIcon /> Save Changes</button>
           </div>
         </form>
       </div>

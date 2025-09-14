@@ -44,7 +44,13 @@ export default function MemberManagement({ token, user, onError }: MemberManagem
     setIsInviting(true);
     onError(null);
     try {
-      // use the tenant-scoped invite endpoint
+      const emailParts = newUserEmail.split('@');
+      const tenantDomain = user.tenant.slug + '.test';
+      
+      if (emailParts.length !== 2 || emailParts[1] !== tenantDomain) {
+        throw new Error(`Email must have @${tenantDomain} domain`);
+      }
+      
       const res = await fetch(`${apiBase}/tenants/${user.tenant.slug}/invite`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -53,7 +59,7 @@ export default function MemberManagement({ token, user, onError }: MemberManagem
       const body = await res.json();
       if (!res.ok) throw new Error(body.error || 'Failed to invite user');
       setNewUserEmail('');
-      await fetchMembers(); // Refresh member list
+      await fetchMembers(); 
     } catch (err: any) {
       onError(err.message);
     } finally {
@@ -74,14 +80,17 @@ export default function MemberManagement({ token, user, onError }: MemberManagem
           ))}
         </ul>
         <form onSubmit={inviteUser} className="invite-form">
-          <input 
-            type="email" 
-            value={newUserEmail} 
-            onChange={(e) => setNewUserEmail(e.target.value)} 
-            placeholder="new.member@email.com" 
-            required
-          />
-          <button type="submit" className="btn-icon" disabled={isInviting}>
+          <div className="email-input-container">
+            <input 
+              type="text" 
+              value={newUserEmail.split('@')[0] || ''}
+              onChange={(e) => setNewUserEmail(e.target.value + '@' + user.tenant.slug + '.test')}
+              placeholder="username" 
+              required
+            />
+            <span className="email-domain">@{user.tenant.slug}.test</span>
+          </div>
+          <button type="submit" className="btn-icon email-btn" disabled={isInviting}>
             {isInviting ? <LoaderIcon/> : <SendIcon/>}
           </button>
         </form>
