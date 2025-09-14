@@ -3,13 +3,11 @@ import { useEffect, useState } from 'react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
-// Make sure to import the new CSS file
-// import './styles/dashboard.css';
-
 type Tenant = { id: string; name: string; slug: string; plan: string; maxNotes: number };
 type User = { id: string; email: string; role: string; tenant: Tenant };
 
 export default function Page() {
+  const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
@@ -25,6 +23,7 @@ export default function Page() {
         handleLogout();
       }
     }
+    setIsLoading(false);
   }, []);
 
   const handleLogin = (tkn: string, u: User) => {
@@ -40,6 +39,10 @@ export default function Page() {
     setToken(null);
     setUser(null);
   };
+
+  if (isLoading) {
+    return <div className='loading-screen'>Loading...</div>;
+  }
 
   return (
     <main>

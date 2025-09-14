@@ -24,7 +24,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     const body = await req.json();
     const note = await prisma.note.updateMany({
       where: { id, tenantId: auth.tenantId },
-      data: { title: body.title, content: body.content }
+      data: { title: body.title, content: body.content, isPublic: !!body.isPublic }
     });
     if (note.count === 0) return NextResponse.json({ error: 'Not found' }, { status: 404, headers: { 'Access-Control-Allow-Origin': '*' }});
     const updated = await prisma.note.findUnique({ where: { id } });

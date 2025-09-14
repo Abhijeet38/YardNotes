@@ -8,11 +8,20 @@ export async function OPTIONS() { return handleOptions(); }
 export async function GET(req: NextRequest) {
   try {
     const auth = requireAuth(req);
+    
+    // Show private notes only to their creators, plus all public notes in the tenant
     const notes = await prisma.note.findMany({
-      where: { tenantId: auth.tenantId },
+      where: {
+        tenantId: auth.tenantId,
+        OR: [
+          { userId: auth.userId }, // User's own notes (private or public)
+          { isPublic: true }       // Public notes from others in the same tenant
+        ]
+      },
       include: { user: { select: { email: true, id: true } } },
       orderBy: { createdAt: 'desc' }
     });
+    
     return NextResponse.json(notes, { headers: { 'Access-Control-Allow-Origin': '*' }});
   } catch (e) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: { 'Access-Control-Allow-Origin': '*' }});
@@ -42,7 +51,8 @@ export async function POST(req: NextRequest) {
         title: body.title,
         content: body.content,
         tenantId: auth.tenantId,
-        userId: auth.userId
+        userId: auth.userId,
+        isPublic: !!body.isPublic
       }
     });
 
