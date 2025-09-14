@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 // --- Child Components ---
 import Sidebar from './layout/Sidebar';
-import Header from './layout/header';
+import Header from './layout/Header';
 import NoteList from './notes/NoteList';
 import MemberManagement from './admin/MemberManagement';
 import NoteCreatorModal from './notes/NoteCreator';
