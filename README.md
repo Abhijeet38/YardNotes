@@ -1,29 +1,20 @@
-# Multi-tenant Notes (Prisma + Postgres + Next.js App Router)
+# 📝 YardNotes : Multi-Tenant SaaS Notes App
 
-Multi-tenant approach: shared schema with tenantId on users and notes. All requests require a JWT carrying tenantId; server-side enforcement ensures tenant isolation.
+A **multi-tenant notes app** built with **Next.js, Prisma, PostgreSQL, and Vercel**.
+Supports multiple tenants with role-based access, subscription gating (Free vs Pro), and secure CRUD APIs.
 
-Local:
-1. cp .env.example .env and set DATABASE_URL and JWT_SECRET
-2. npm install
-3. npx prisma generate
-4. npx prisma migrate dev --name init
-5. npm run seed
-6. npm run dev
+---
 
-API Reference
-- GET /api/health — { status: "ok" }
-- POST /api/auth/login — { email, password } → { token, user }
-- GET /api/notes — list tenant notes (Auth)
-- POST /api/notes — create note (Auth, respects tenant plan limits)
-- GET /api/notes/:id — get note (Auth)
-- PUT /api/notes/:id — update note (Auth)
-- DELETE /api/notes/:id — delete note (Auth)
-- POST /api/tenants/:slug/upgrade — Admin only
-- POST /api/tenants/:slug/invite — Admin only (creates user with default password)
+## Features
+
+* Multi-tenancy with strict tenant isolation.
+* JWT authentication & role-based authorization.
+* Subscription plans: **Free (max 3 notes/tenant)**, **Pro (unlimited notes)**.
+* CRUD Notes API + Upgrade endpoint.
+* Health check endpoint.
+---
+<img width="785" height="999" alt="Screenshot 2025-09-15 at 4 44 08 AM" src="https://github.com/user-attachments/assets/fab4397a-e598-4616-a8eb-5e1f02342cf5" />
+
+<img width="785" height="789" alt="Screenshot 2025-09-15 at 4 43 51 AM" src="https://github.com/user-attachments/assets/33708926-6d0e-4d0f-a42d-c21668ad4e54" />
 
 
-Predefined accounts (password: password):
-- admin@acme.test (Admin, tenant: Acme)
-- user@acme.test (Member, tenant: Acme)
-- admin@globex.test (Admin, tenant: Globex)
-- user@globex.test (Member, tenant: Globex)
